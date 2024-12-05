@@ -4,26 +4,38 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+
+import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.Constants;
+import frc.robot.Constants.OperatorConstants;
 public class ExampleSubsystem extends SubsystemBase {
-  /** Creates a new ExampleSubsystem. */
-  public ExampleSubsystem() {}
-
+CANSparkMax armMotor = new CANSparkMax(OperatorConstants.motorID, com.revrobotics.CANSparkLowLevel.MotorType.kBrushless);
+ 
   /**
    * Example command factory method.
    *
    * @return a command
    */
-  public Command exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-        });
+  public Command upCommand() {
+  return startEnd(() ->{
+      armMotor.set(OperatorConstants.armSpeed);
+    }, 
+    ()->{
+      armMotor.set(0);
+    });
   }
+  public Command downCommand() {
+  return startEnd(() ->{
+      armMotor.set(OperatorConstants.armSpeed * -1);
+    }, 
+    ()->{
+      armMotor.set(0);
+    });
+  }
+
 
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
